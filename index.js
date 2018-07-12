@@ -2,17 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-  render() {
+function Square(props) {
     return (
       <button 
         className="square" 
-        onClick={() =>  this.props.onClick()}
+        onClick={props.onClick} // functional components don't need to worry about the keyword this; they only need to key off of the parameters being passed in
       >
-        {this.props.value}
+        {props.value}
       </button>
     );
-  }
 }
 
 class Board extends React.Component {
