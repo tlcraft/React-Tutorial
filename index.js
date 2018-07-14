@@ -54,6 +54,7 @@ class Game extends React.Component {
       history: [{
         squares: Array(9).fill(null),
       }],
+      stepNumber: 0,
       xIsNext: true,
     };
   }
@@ -62,7 +63,7 @@ class Game extends React.Component {
     // .slice will create a copy of the squares array for modification
     // immutability is important in React fundamentally
     // one key use is for comparison of the state of an object
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
         
@@ -76,13 +77,21 @@ class Game extends React.Component {
       history: history.concat([{
         squares: squares,
       }]),
+      stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+    });
+  }
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
     });
   }
 
   render() {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
@@ -90,7 +99,10 @@ class Game extends React.Component {
         'Go to move #' + move :
         'Go to game start';
       return (
-        <li>
+        // Keys are important so that components can be updated correctly and maintain order.
+        // Keys are not accessible from components themselves."A component cannot inquire about its key."
+        // NOTE: It’s strongly recommended that you assign proper keys whenever you build dynamic lists.
+        <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
