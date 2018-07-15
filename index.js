@@ -96,7 +96,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + ' (' + getPosition() + ')':
         'Go to game start';
       return (
         // Keys are important so that components can be updated correctly and maintain order.
@@ -139,6 +139,27 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+function getPosition(index) {
+  let position = '';
+  if (index >= 0 && index < 9) {
+    const coordinates = [
+      '0, 0',
+      '0, 1',
+      '0, 2',
+      '1, 0',
+      '1, 1',
+      '1, 2',
+      '2, 0',
+      '2, 1',
+      '2, 2',
+    ]
+
+    position = coordinates(index);
+  } 
+  
+  return position;
+}
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -160,3 +181,11 @@ function calculateWinner(squares) {
 
   return null;
 }
+
+// TODO
+// Display the location for each move in the format (col, row) in the move history list.
+// Bold the currently selected item in the move list.
+// Rewrite Board to use two loops to make the squares instead of hardcoding them.
+// Add a toggle button that lets you sort the moves in either ascending or descending order.
+// When someone wins, highlight the three squares that caused the win.
+// When no one wins, display a message about the result being a draw.
