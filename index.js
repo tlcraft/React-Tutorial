@@ -100,12 +100,14 @@ class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move + ' (' + getPosition(step.index) + ')':
         'Go to game start';
+      const cssClass = this.state.stepNumber == move ? 'selected' : '';
+
       return (
         // Keys are important so that components can be updated correctly and maintain order.
         // Keys are not accessible from components themselves."A component cannot inquire about its key."
         // NOTE: It’s strongly recommended that you assign proper keys whenever you build dynamic lists.
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={cssClass} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
