@@ -53,6 +53,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        index: 0,
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -76,6 +77,7 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        index: i,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -96,7 +98,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move + ' (' + getPosition() + ')':
+        'Go to move #' + move + ' (' + getPosition(step.index) + ')':
         'Go to game start';
       return (
         // Keys are important so that components can be updated correctly and maintain order.
@@ -154,7 +156,7 @@ function getPosition(index) {
       '2, 2',
     ]
 
-    position = coordinates(index);
+    position = coordinates[index];
   } 
   
   return position;
