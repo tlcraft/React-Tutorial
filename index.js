@@ -13,36 +13,52 @@ function Square(props) {
     );
 }
 
+function BoardRow(props) {
+  return (
+    <div 
+      className="board-row"
+    >
+      {props.rowSquares}
+    </div>
+  );
+}
+
 class Board extends React.Component {
   renderSquare(i) {
     return (
-      <Square 
+      <Square key={i}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
      />
     );
   }
 
+  renderBoardRow(rowSquares, i) {
+    return (
+      <BoardRow key={i}
+        rowSquares={rowSquares}
+      />
+    );
+  }
+
   render() {
+    const board = [];
+    let boardRow = [];
+
+    let index = 0;
+    for ( let i = 0; i < 3; i++) {
+      boardRow = [];
+      for ( let j = 0; j < 3; j++) {
+        boardRow.push(this.renderSquare(index++));
+      }
+      board.push(this.renderBoardRow(boardRow, i));
+    }
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {board}
       </div>
-    );
+    )
   }
 }
 
@@ -100,7 +116,7 @@ class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move + ' (' + getPosition(step.index) + ')':
         'Go to game start';
-      const cssClass = this.state.stepNumber == move ? 'selected' : '';
+      const cssClass = this.state.stepNumber === move ? 'selected' : '';
 
       return (
         // Keys are important so that components can be updated correctly and maintain order.
