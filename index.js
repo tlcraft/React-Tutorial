@@ -23,6 +23,15 @@ function BoardRow(props) {
   );
 }
 
+// Functional components only contain render methods and have no state of their own
+function Move(props) {
+  return (
+    <li>
+      <button className={props.cssClass} onClick={props.jumpTo}>{props.desc}</button>
+    </li>
+  );
+}
+
 class Board extends React.Component {
   renderSquare(i) {
     return (
@@ -127,17 +136,19 @@ class Game extends React.Component {
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move + ' (' + getPosition(step.index) + ')':
-        'Go to game start';
+        'Go to game start'; //TODO Fix label ordering
       const cssClass = this.state.stepNumber === move ? 'selected' : '';
 
       return (
+        <Move key={move}
+          cssClass={cssClass}
+          desc={desc}
+          jumpTo={() => this.jumpTo(move)}
+        />
         // Keys are important so that components can be updated correctly and maintain order.
         // Keys are not accessible from components themselves."A component cannot inquire about its key."
         // NOTE: It’s strongly recommended that you assign proper keys whenever you build dynamic lists.
         // https://reactjs.org/docs/lists-and-keys.html
-        <li key={move}>
-          <button className={cssClass} onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
       );
     });
 
