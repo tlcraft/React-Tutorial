@@ -26,7 +26,7 @@ function BoardRow(props) {
 class Board extends React.Component {
   renderSquare(i) {
     return (
-      <Square key={i}
+      <Square key={i.toString()}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
      />
@@ -35,7 +35,7 @@ class Board extends React.Component {
 
   renderBoardRow(rowSquares, i) {
     return (
-      <BoardRow key={i}
+      <BoardRow key={i.toString()}
         rowSquares={rowSquares}
       />
     );
@@ -134,6 +134,7 @@ class Game extends React.Component {
         // Keys are important so that components can be updated correctly and maintain order.
         // Keys are not accessible from components themselves."A component cannot inquire about its key."
         // NOTE: It’s strongly recommended that you assign proper keys whenever you build dynamic lists.
+        // https://reactjs.org/docs/lists-and-keys.html
         <li key={move}>
           <button className={cssClass} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
