@@ -112,8 +112,13 @@ class Game extends React.Component {
 
   handleSortClick() {
     let isAscending = this.state.isAscending;
+    let history = this.state.history;
+
+    history = history.reverse();
+    
     this.setState({
       isAscending: !isAscending,
+      history: history,
     });
   }
 
@@ -128,10 +133,6 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
-    if (!this.state.isAscending) {
-      history.reverse();
-    }
 
     const moves = history.map((step, move) => {
       const desc = move ?
