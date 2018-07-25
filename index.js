@@ -113,12 +113,14 @@ class Game extends React.Component {
   handleSortClick() {
     let isAscending = this.state.isAscending;
     let history = this.state.history;
+    let stepNumber = history.length-1 - this.state.stepNumber;
 
     history = history.reverse();
     
     this.setState({
       isAscending: !isAscending,
       history: history,
+      stepNumber: stepNumber,
     });
   }
 
@@ -133,12 +135,22 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const isAscending = this.state.isAscending;
+    const stepNumber = this.state.stepNumber;
 
     const moves = history.map((step, move) => {
-      const desc = move ?
+      let desc = ""
+      const cssClass = stepNumber === move ? 'selected' : '';
+
+      if (isAscending) {
+        desc = move ?
         'Go to move #' + move + ' (' + getPosition(step.index) + ')':
-        'Go to game start'; //TODO Fix label ordering
-      const cssClass = this.state.stepNumber === move ? 'selected' : '';
+        'Go to game start';
+      } else {
+        desc = history.length-1 !== move ?
+        'Go to move #' + (history.length-1-move) + ' (' + getPosition(step.index) + ')':
+        'Go to game start';
+      }      
 
       return (
         <Move key={move}
