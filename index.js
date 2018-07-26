@@ -93,12 +93,12 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-        
+
     // return if the game is over or the square is already filled
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
-    
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{
@@ -112,15 +112,9 @@ class Game extends React.Component {
 
   handleSortClick() {
     let isAscending = this.state.isAscending;
-    let history = this.state.history;
-    let stepNumber = history.length-1 - this.state.stepNumber;
-
-    history = history.reverse();
     
     this.setState({
       isAscending: !isAscending,
-      history: history,
-      stepNumber: stepNumber,
     });
   }
 
@@ -132,25 +126,17 @@ class Game extends React.Component {
   }
 
   render() {
+    const stepNumber = this.state.stepNumber;
     const history = this.state.history;
-    const current = history[this.state.stepNumber];
+    const current = history[stepNumber];
     const winner = calculateWinner(current.squares);
     const isAscending = this.state.isAscending;
-    const stepNumber = this.state.stepNumber;
 
-    const moves = history.map((step, move) => {
-      let desc = ""
+    let moves = history.map((step, move) => {
+      const desc = move ?
+      'Go to move #' + move + ' (' + getPosition(step.index) + ')':
+      'Go to game start';
       const cssClass = stepNumber === move ? 'selected' : '';
-
-      if (isAscending) {
-        desc = move ?
-        'Go to move #' + move + ' (' + getPosition(step.index) + ')':
-        'Go to game start';
-      } else {
-        desc = history.length-1 !== move ?
-        'Go to move #' + (history.length-1-move) + ' (' + getPosition(step.index) + ')':
-        'Go to game start';
-      }      
 
       return (
         <Move key={move}
@@ -172,7 +158,12 @@ class Game extends React.Component {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
-    let btnText = (this.state.isAscending ? 'Sort descending' : 'Sort ascending');
+    let btnText = 'Sort descending';
+
+    if (!isAscending) {
+      moves = moves.reverse();
+      btnText = 'Sort ascending';
+    }
 
     return (
       <div className="game">
