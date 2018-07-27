@@ -5,7 +5,7 @@ import './index.css';
 function Square(props) {
     return (
       <button 
-        className="square" 
+        className={"square" + props.className}
         onClick={props.onClick} // functional components don't need to worry about the keyword this; they only need to key off of the parameters being passed in
       >
         {props.value}
@@ -33,11 +33,12 @@ function Move(props) {
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, className) {
     return (
       <Square key={i.toString()}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        className={className}
      />
     );
   }
@@ -53,12 +54,22 @@ class Board extends React.Component {
   render() {
     const board = [];
     let boardRow = [];
+    let className = "";
+    const winningSquares = this.props.winner;
 
     let index = 0;
     for ( let i = 0; i < 3; i++) {
       boardRow = [];
+
       for ( let j = 0; j < 3; j++) {
-        boardRow.push(this.renderSquare(index++));
+
+        if (winningSquares && winningSquares.includes(index)) {
+          className = " selected";
+        } else {
+          className = "";
+        }
+
+        boardRow.push(this.renderSquare(index++, className));
       }
       board.push(this.renderBoardRow(boardRow, i));
     }
@@ -153,7 +164,7 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = 'Winner: ' + winner;
+      status = 'Winner: ' + (!this.state.xIsNext ? 'X' : 'O');
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -171,6 +182,7 @@ class Game extends React.Component {
           <Board 
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
+            winner={winner}
           />
         </div>
         <div className="game-info">
@@ -226,7 +238,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [a, b, c];
     }
   }
 

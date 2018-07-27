@@ -34,6 +34,7 @@ ol, ul {
 
 .selected {
   font-weight: bold;
+  background: lightblue;
 }
 
 .square:focus {
