@@ -136,6 +136,21 @@ class Game extends React.Component {
     });
   }
 
+  endGame(squares, hasWinner) {
+    let endGame = false;
+
+    for(let i = 0; i < squares.length; i++) {
+      if (squares !== null && squares[i] !== null && squares[i].value !== "") {
+        endGame = true;
+      } else {
+        endGame = false;
+        break;
+      }
+    }
+
+    return endGame && !hasWinner;
+  }
+
   render() {
     const stepNumber = this.state.stepNumber;
     const history = this.state.history;
@@ -168,6 +183,9 @@ class Game extends React.Component {
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
+
+    if (this.endGame(current.squares, winner))
+      status = "Cat's game, no one won this time. Play again.";
 
     let btnText = 'Sort descending';
 
