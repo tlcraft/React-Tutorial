@@ -263,7 +263,7 @@ function calculateWinner(squares) {
   return null;
 }
 
-// TODO
+// ** Additional functionality suggestions from the tutorial **
 // Display the location for each move in the format (col, row) in the move history list.
 // Bold the currently selected item in the move list.
 // Rewrite Board to use two loops to make the squares instead of hardcoding them.
