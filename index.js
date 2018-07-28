@@ -27,7 +27,12 @@ function BoardRow(props) {
 function Move(props) {
   return (
     <li>
-      <button className={props.cssClass} onClick={props.jumpTo}>{props.desc}</button>
+      <button 
+        className={props.cssClass} 
+        onClick={props.jumpTo}
+      >
+        {props.desc}
+      </button>
     </li>
   );
 }
